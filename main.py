@@ -192,7 +192,7 @@ surface = np.zeros((nx,ny))
 an_surface = np.zeros((nx,ny))
 for i, x in enumerate(x_space):
     for j, y in enumerate(y_space):
-        input_point = torch.Tensor([x, y])
+        input_point = torch.Tensor([x, y]).double()
         input_point.requires_grad_()
         net_out = pde.forward(input_point)
 
