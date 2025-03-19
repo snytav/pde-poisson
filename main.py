@@ -44,7 +44,7 @@ def loss_function(x, y,pde,psy_trial,f):
 
     for xi in x:
         for yi in y:
-            input_point = torch.Tensor([xi, yi]).double()
+            input_point = torch.Tensor([xi, yi])
             input_point.requires_grad_()
 
             net_out = pde.forward(input_point)
@@ -104,11 +104,11 @@ class PDEnet(nn.Module):
         super(PDEnet,self).__init__()
         self.N = N
         fc1 = nn.Linear(2,self.N) # первый слой
-        fc1.weight = nn.Parameter(torch.from_numpy(w0).T.double())
-        fc1.bias = nn.Parameter(torch.zeros(fc1.bias.shape).double())
+        #fc1.weight = nn.Parameter(torch.from_numpy(w0).T.double())
+        # fc1.bias = nn.Parameter(torch.zeros(fc1.bias.shape).double())
         fc2 = nn.Linear(self.N, 1) # второй слой
-        fc2.weight = nn.Parameter(torch.from_numpy(w1).reshape(1,w1.shape[0]).double())
-        fc2.bias = nn.Parameter(torch.zeros(fc2.bias.shape).double())
+        #fc2.weight = nn.Parameter(torch.from_numpy(w1).reshape(1,w1.shape[0]).double())
+        # fc2.bias = nn.Parameter(torch.zeros(fc2.bias.shape).double())
         self.fc1 = fc1
 
         self.fc2 = fc2
@@ -126,7 +126,7 @@ def A(x):
 def psy_trial(x, net_out):
     return A(x) + x[0] * (1 - x[0]) * x[1] * (1 - x[1]) * net_out
 
-nx = 3
+nx = 10
 ny = nx
 pde = PDEnet(nx)
 dx = 1. / nx
@@ -143,7 +143,7 @@ if torch.cuda.is_available():
   #print(x_space)
   print(x_space.device)
 
-input_point = torch.zeros(2).double()
+input_point = torch.zeros(2)#.double()
 
 input_point.shape,pde.fc1.weight.T.shape
 
@@ -154,7 +154,7 @@ torch.matmul(input_point,pde.fc1.weight.T)
 out1 = pde.fc1(input_point)
 out1
 
-torch.matmul(out1.reshape(1,3),pde.fc2.weight.reshape(1,3).T)
+#torch.matmul(out1.reshape(1,3),pde.fc2.weight.reshape(1,3).T)
 
 pde.fc2(out1)
 
@@ -192,7 +192,7 @@ surface = np.zeros((nx,ny))
 an_surface = np.zeros((nx,ny))
 for i, x in enumerate(x_space):
     for j, y in enumerate(y_space):
-        input_point = torch.Tensor([x, y]).double()
+        input_point = torch.Tensor([x, y])
         input_point.requires_grad_()
         net_out = pde.forward(input_point)
 
