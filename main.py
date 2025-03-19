@@ -210,6 +210,7 @@ X, Y = np.meshgrid(x_space.numpy(), y_space.numpy())
 surf = ax.plot_surface(X, Y, surface, rstride=1, cstride=1, cmap=cm.viridis,
                        linewidth=0, antialiased=False)
 plt.title('Neural solution')
+plt.savefig('neural.png')
 
 fig = plt.figure()
 fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
@@ -217,10 +218,11 @@ X, Y = np.meshgrid(x_space.numpy(), y_space.numpy())
 surf = ax.plot_surface(X, Y, an_surface, rstride=1, cstride=1, cmap=cm.viridis,
                        linewidth=0, antialiased=False)
 plt.title('Analytic solution')
+plt.savefig('analytic.png')
 
 from sklearn.metrics import mean_absolute_percentage_error
 mape = mean_absolute_percentage_error(an_surface, surface)
-mape
+print(mape)
 
 import numpy as np
 diff = np.abs(an_surface-surface)
